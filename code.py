@@ -157,7 +157,7 @@ trdnew = pd.merge(trd4,trdnew,on='id',how='outer')
 trdnew = pd.merge(trd5,trdnew,on='id',how='outer')
 trdnew = trdnew.fillna(0)
 
-#去相反数，加正反列
+
 zhengfu = []
 for i in trdnew['yingyu']:
     if i>= 0:
@@ -165,8 +165,7 @@ for i in trdnew['yingyu']:
     else:
         zhengfu.append('B')        
 trdnew['zhengfu'] = zhengfu
-trdnew['zhichu'] = trdnew['zhichu'].apply(lambda x:abs(x))
-trdnew['yingyuabs'] = trdnew['yingyu'].apply(lambda x:abs(x))
+
 
 
 trdnew1 = pd.merge(trdtime,trdnew,on='id',how='outer')
@@ -345,16 +344,14 @@ trdnewt = pd.merge(trd4t,trdnewt,on='id',how='outer')
 trdnewt = pd.merge(trd5t,trdnewt,on='id',how='outer')
 trdnewt = trdnewt.fillna(0)
 
-#去相反数，加正反列
+
 zhengfut = []
 for i in trdnewt['yingyu']:
     if i>= 0:
         zhengfut.append('A')
     else:
-        zhengfut.append('B')        
-trdnewt['zhengfu'] = zhengfut
-trdnewt['zhichu'] = trdnewt['zhichu'].apply(lambda x:abs(x))
-trdnewt['yingyuabs'] = trdnewt['yingyu'].apply(lambda x:abs(x))
+        zhengfut.append('B')  
+trdnew['zhengfu'] = zhengfu
 
 
 
@@ -373,9 +370,6 @@ trdnewt1['zhichurate'] = trdnewt1['zhichucount']/(trdnewt1['zhichucount']+trdnew
 
 
 tag2t = pd.merge(tag1t,trdnewt1,on='id',how='left')
-#tag2t = pd.merge(tag1t,trdnewt1,on='id',how='left')
-#tag3t = tag2t[['id','fwcishu','page_no','Count','zhichu','shouru','yingyu','zhichucount','shourucount','zhichulargecount','shourulargecount','Dat_Flg3_Cd','Trx_Cod1_Cd']].fillna(0)
-#tagnewt = pd.merge(tagt,tag3t,on='id',how='left')
 
 jyqueshit = []
 for j in tag2t['jycishu']:
@@ -390,14 +384,7 @@ tagnewt = tag2t.drop([
  'deg_cd'],axis=1,inplace=False)
 testdf = tagnewt.replace('\\N', np.NAN)
 testdf.isnull().sum()
-#
-traindf['Trx_Cod1_Cd'] = traindf['Trx_Cod1_Cd'].replace(1, 'A')
-traindf['Trx_Cod1_Cd'] = traindf['Trx_Cod1_Cd'].replace(2, 'B')
-traindf['Trx_Cod1_Cd'] = traindf['Trx_Cod1_Cd'].replace(3, 'C')
-testdf['Trx_Cod1_Cd'] = testdf['Trx_Cod1_Cd'].replace(1, 'A')
-testdf['Trx_Cod1_Cd'] = testdf['Trx_Cod1_Cd'].replace(2, 'B')
-testdf['Trx_Cod1_Cd'] = testdf['Trx_Cod1_Cd'].replace(3, 'C')
-#
+
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -634,8 +621,6 @@ def xgbCV(eta,max_depth,sub_sample,colsample_bytree):
         train_performance[each_param] =  valid_mean
         print ("Parameters are {}. Training performance is {:.4f}. Validation performance is {:.4f}".format(each_param,train_mean,valid_mean))
     return (train_performance,val_performance)
-#xgbCV(eta=[0.02,0.03,0.04],max_depth=[6,7,8],sub_sample=[0.8],colsample_bytree=[0.5]) 
-#xgbCV(eta=[0.02],max_depth=[6],sub_sample=[0.8],colsample_bytree=[0.5]) 没改之前
 xgbCV(eta=[0.03],max_depth=[6],sub_sample=[0.8],colsample_bytree=[0.5]) #0.7510
 
 
